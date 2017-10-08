@@ -14,7 +14,7 @@ def remove_comments(text):
     return isinstance(text, Comment)
 
 
-def func_checker(element):
+def func_checker(elment):
     if element.find_parent('script') and \
        element.find_parent('style'):
         return True

@@ -24,7 +24,7 @@ def proxy_view(request):
             if text:
                 if not element.find_parent('script') and \
                    not element.find_parent('head'):
-                    element.replace_with(re.sub(r'\b(\w{6,})\b',
+                    element.replace_with(re.sub(r'\b(\w{6})\b',
                                                 tm_adder,
                                                 text))
 

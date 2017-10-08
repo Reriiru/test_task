@@ -14,7 +14,7 @@ def remove_comments(text):
     return isinstance(text, Comment)
 
 
-def func_checker(elment):
+def func_checker(element):
     if element.find_parent('script') and \
        element.find_parent('style'):
         return True
@@ -39,7 +39,6 @@ def proxy_view(request):
                 comment.extract()
 
         elements = soup.body.find_all(text=True)
-        print(soup.body.find_all())
         for element in elements:
             text = None
             if not func_checker(element):

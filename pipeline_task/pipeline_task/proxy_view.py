@@ -43,7 +43,8 @@ def link_retainer(link):
 def proxy_view(request):
     '''Does proxy and filtering'''
 
-    connection = urllib.request.Request("http://habrahabr.ru" + request.get_full_path())
+    connection = urllib.request.Request("http://habrahabr.ru"
+                                        + request.get_full_path())
 
     if request.method == "GET":
         content = urllib.request.urlopen(connection)

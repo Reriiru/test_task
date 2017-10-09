@@ -1,5 +1,6 @@
 import urllib.request
 from django.http import HttpResponse
+from django.shortcuts import redirect
 from bs4 import BeautifulSoup, Comment
 import re
 
@@ -49,8 +50,14 @@ def proxy_view(request):
     if request.method == "GET":
         content = urllib.request.urlopen(connection)
         headers = content.info()
+        
+        # Preserve the redirects so we don't have to proxy everything
+        if content.geturl().split('/')[2] != 'habrahabr.ru':
+            return redirect(content.geturl())
+
+        # Check if we actually try to parse html and not binary or js.
         if headers['Content-Type'] == 'text/html; charset=UTF-8':
-            soup = BeautifulSoup(content, 'html.parser')
+            soup = BeautifulSoup(content, 'html5lib')
 
             # Strip all the comments
             comments = soup.findAll(text=remove_comments)
@@ -72,9 +79,11 @@ def proxy_view(request):
                     link_retainer(link)
 
             return HttpResponse(soup.prettify())
+        # Return everything but html unchanged.
         else:
             return HttpResponse(content)
 
+    # We just pass all the post requests as is to habrahabr.
     if request.method == "POST":
         post = urllib.request.urlopen(connection, request.POST)
         return HttpResponse(post)

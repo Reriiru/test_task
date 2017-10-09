@@ -35,11 +35,9 @@ def replace(text):
 
 def link_retainer(link):
     '''Replaces given link with a 127.0.0.1 one'''
-    print(link['href'])
     if link['href'].find('habrahabr.ru') != -1:
         link['href'] = link['href'].replace('https://habrahabr.ru',
                                             'http://127.0.0.1:8000')
-    print(link['href'])
 
 
 def proxy_view(request):
@@ -47,11 +45,9 @@ def proxy_view(request):
 
     connection = urllib.request.Request("http://habrahabr.ru" + request.path)
 
-    print(request.GET)
     if request.method == "GET":
         content = urllib.request.urlopen(connection)
         headers = content.info()
-        print(headers)
         if headers['Content-Type'] == 'text/html; charset=UTF-8':
             soup = BeautifulSoup(content, 'html.parser')
 

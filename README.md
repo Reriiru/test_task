@@ -1,5 +1,5 @@
-## Just a rough draft.
+## More or less stable.
 
-Issues to fix:
+Issue:
 
-* Investigating a reason why some of the words in header are not changed (Exactly here: "Мегапосты: Чемпионат по AIАльфа-Бизнес Мобайл")
+* XHR requests still go to habrahabr.ru instead of 127.0.0.1. As such, they remain unparsed.

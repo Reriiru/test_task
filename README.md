@@ -2,6 +2,4 @@
 
 Issues to fix:
 
-* All requests but GET.
-* Fix layout.
-* How can function this small be so unreadable? Fix this at once!
+* Investigation a reason why some of the words in header ar not chenged (Exactly here: "Мегапосты: Чемпионат по AIАльфа-Бизнес Мобайл")

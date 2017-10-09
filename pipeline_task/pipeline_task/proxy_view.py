@@ -35,40 +35,49 @@ def replace(text):
 
 def link_retainer(link):
     '''Replaces given link with a 127.0.0.1 one'''
+    print(link['href'])
     if link['href'].find('habrahabr.ru') != -1:
         link['href'] = link['href'].replace('https://habrahabr.ru',
                                             'http://127.0.0.1:8000')
+    print(link['href'])
 
 
 def proxy_view(request):
     '''Does proxy and filtering'''
 
     connection = urllib.request.Request("http://habrahabr.ru" + request.path)
-    content = urllib.request.urlopen(connection)
-    headers = content.info()
 
-    if headers['Content-Type'] == 'text/html; charset=UTF-8':
-        soup = BeautifulSoup(content, 'html.parser')
+    print(request.GET)
+    if request.method == "GET":
+        content = urllib.request.urlopen(connection)
+        headers = content.info()
+        print(headers)
+        if headers['Content-Type'] == 'text/html; charset=UTF-8':
+            soup = BeautifulSoup(content, 'html.parser')
 
-        # Strip all the comments
-        comments = soup.findAll(text=remove_comments)
+            # Strip all the comments
+            comments = soup.findAll(text=remove_comments)
 
-        for comment in comments:
-            comment.extract()
+            for comment in comments:
+                comment.extract()
 
-        elements = soup.body
-        for child in elements.descendants:
-            text = None
-            if func_checker(child) is False:
-                    text = child.string.strip()
-            if text:
-                child.string.replace_with(replace(text))
+            elements = soup.body
+            for child in elements.descendants:
+                text = None
+                if func_checker(child) is False:
+                        text = child.string.strip()
+                if text:
+                    child.string.replace_with(replace(text))
 
-        links = soup.findAll('a')
-        for link in links:
-            if 'href' in link.attrs.keys():
-                link_retainer(link)
+            links = soup.findAll('a')
+            for link in links:
+                if 'href' in link.attrs.keys():
+                    link_retainer(link)
 
-        return HttpResponse(soup.prettify())
-    else:
-        return HttpResponse(content)
+            return HttpResponse(soup.prettify())
+        else:
+            return HttpResponse(content)
+
+    if request.method == "POST":
+        post = urllib.request.urlopen(connection, request.POST)
+        return HttpResponse(post)

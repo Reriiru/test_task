@@ -2,4 +2,4 @@
 
 Issues to fix:
 
-* Seems that scripts in data urls fail to load.
+* Investigation a reason why some of the words in header ar not chenged (Exactly here: "Мегапосты: Чемпионат по AIАльфа-Бизнес Мобайл")

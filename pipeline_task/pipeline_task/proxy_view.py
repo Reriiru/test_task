@@ -15,11 +15,29 @@ def remove_comments(text):
 
 
 def func_checker(element):
-    if element.find_parent('script') and \
-       element.find_parent('style'):
+    '''Checks element's tag'''
+    if element.string is None:
         return True
-    else:
-        return False
+    if element.name is None:
+        return True
+    if element.name == 'script':
+        return True
+    if element.name == 'style':
+        return True
+
+    return False
+
+
+def replace(text):
+    '''replaces string parts'''
+    return re.sub(r'\b(\w{6})\b', tm_adder, text)
+
+
+def link_retainer(link):
+    '''Replaces given link with a 127.0.0.1 one'''
+    if link['href'].find('habrahabr.ru') != -1:
+        link['href'] = link['href'].replace('https://habrahabr.ru',
+                                            'http://127.0.0.1:8000')
 
 
 def proxy_view(request):
@@ -32,22 +50,25 @@ def proxy_view(request):
     if headers['Content-Type'] == 'text/html; charset=UTF-8':
         soup = BeautifulSoup(content, 'html.parser')
 
+        # Strip all the comments
         comments = soup.findAll(text=remove_comments)
 
         for comment in comments:
-            if not func_checker(comment):
-                comment.extract()
+            comment.extract()
 
-        elements = soup.body.find_all(text=True)
-        for element in elements:
+        elements = soup.body
+        for child in elements.descendants:
             text = None
-            if not func_checker(element):
-                text = element.string.strip()
+            if func_checker(child) is False:
+                    text = child.string.strip()
             if text:
-                element.replace_with(re.sub(r'\b(\w{6})\b',
-                                            tm_adder,
-                                            text))
+                child.string.replace_with(replace(text))
+
+        links = soup.findAll('a')
+        for link in links:
+            if 'href' in link.attrs.keys():
+                link_retainer(link)
 
         return HttpResponse(soup.prettify())
-
-    return HttpResponse(content)
+    else:
+        return HttpResponse(content)

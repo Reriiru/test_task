@@ -8,5 +8,6 @@ Issues:
 To run:
 
 ```
+cd pipeline_task
 python manage.py runserver
 ```

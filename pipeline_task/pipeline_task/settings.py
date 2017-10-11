@@ -1,9 +1,16 @@
 SECRET_KEY = '-3n8mb-asche_4nmw8jz6v39qy7wg78b&eg(@66z(-@+3(0mzh'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'tests_only',
+    }
+}
 
 ROOT_URLCONF = 'pipeline_task.urls'
 

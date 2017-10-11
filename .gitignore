@@ -7,3 +7,10 @@ venv
 # Cache
 __pycache__
 .cache
+
+# Unspecific test
+.on_paper_test.py
+log.txt
+
+#DB
+tests_only

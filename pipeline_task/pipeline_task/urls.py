@@ -14,8 +14,8 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
 from django.conf.urls import url
-from pipeline_task.proxy_view import proxy_view
+from pipeline_task.proxy_view import ProxyView
 
 urlpatterns = [
-    url(r'^', proxy_view)
+    url(r'^', ProxyView.as_view(), name='proxy')
 ]
